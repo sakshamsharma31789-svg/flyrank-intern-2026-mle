@@ -1,0 +1,253 @@
+{
+  "dataset": {
+    "name": "FlyRank/internship-starter",
+    "release": "Public anonymized starter dataset; 30,000 rows, 53 columns, 32 pseudonymized clients",
+    "source_url": "https://huggingface.co/datasets/FlyRank/internship-starter",
+    "row_count": 30000,
+    "column_count": 53,
+    "client_count": 32,
+    "eligible_pages": 18673,
+    "eligibility_rule": "at least 50 impressions in impressions_last_30d",
+    "relative_windows": "Target uses last 30 days; the dataset also supplies a previous 30-day comparison and 90-day aggregates. The starter card does not provide absolute calendar dates for these windows.",
+    "public_safety": "No titles, URLs, domains, private queries, client names, raw rows, or hashed IDs are included in published outputs."
+  },
+  "analysis": {
+    "question": "Can page/context features estimate last-30-day CTR more accurately than a position-tier-only baseline, and which aggregate cohorts merit review?",
+    "overall_weighted_ctr_pct_eligible": 0.345078659461992,
+    "min_impressions": 50,
+    "split": "5-fold GroupKFold; all rows for a pseudonymized client stay in one fold; random_state=42 for the random forest.",
+    "features": [
+      "avg_position",
+      "search_volume",
+      "competition",
+      "word_count",
+      "content_age_days",
+      "days_since_last_update",
+      "content_type",
+      "main_intent",
+      "competition_level",
+      "age_tier",
+      "freshness_tier",
+      "position_tier"
+    ],
+    "excluded_features": [
+      "client_id",
+      "content_id",
+      "click/impression-derived rates, session metrics, trend fields, product flags, health scores, model/provider metadata, and all other outcome-window metrics"
+    ],
+    "model": "RandomForestRegressor, 250 trees, min_samples_leaf=12, max_features=0.8; one-hot encoded categorical fields and median/mode imputation; training weights are square-root impression weights capped at the training-fold 95th percentile.",
+    "baseline": "Training-fold, impression-weighted mean last-30-day CTR within position_tier, with training-fold global mean fallback for unseen tiers.",
+    "model_weighted_mae_pp": 0.25136065918840284,
+    "baseline_weighted_mae_pp": 0.25625536386792847,
+    "model_weighted_rmse_pp": 0.36594584914706546,
+    "baseline_weighted_rmse_pp": 0.3699947851896902,
+    "mae_improvement_vs_baseline_pct": 1.9100886731285411,
+    "fold_metrics": [
+      {
+        "fold": 1,
+        "test_pages": 6097,
+        "model": {
+          "weighted_mae_pp": 0.24702891187730014,
+          "weighted_rmse_pp": 0.30255476973211426
+        },
+        "position_baseline": {
+          "weighted_mae_pp": 0.255766021477802,
+          "weighted_rmse_pp": 0.3019708694522084
+        }
+      },
+      {
+        "fold": 2,
+        "test_pages": 3326,
+        "model": {
+          "weighted_mae_pp": 0.24401910799671972,
+          "weighted_rmse_pp": 0.406711436518899
+        },
+        "position_baseline": {
+          "weighted_mae_pp": 0.2439017460889779,
+          "weighted_rmse_pp": 0.4112830432496972
+        }
+      },
+      {
+        "fold": 3,
+        "test_pages": 3083,
+        "model": {
+          "weighted_mae_pp": 0.208848951022346,
+          "weighted_rmse_pp": 0.2979700929207146
+        },
+        "position_baseline": {
+          "weighted_mae_pp": 0.237154306263237,
+          "weighted_rmse_pp": 0.33654044977491643
+        }
+      },
+      {
+        "fold": 4,
+        "test_pages": 3081,
+        "model": {
+          "weighted_mae_pp": 0.2845499141786625,
+          "weighted_rmse_pp": 0.3791492219833414
+        },
+        "position_baseline": {
+          "weighted_mae_pp": 0.27786646169273127,
+          "weighted_rmse_pp": 0.37263819806255905
+        }
+      },
+      {
+        "fold": 5,
+        "test_pages": 3086,
+        "model": {
+          "weighted_mae_pp": 0.31073238111378604,
+          "weighted_rmse_pp": 0.5057793734560239
+        },
+        "position_baseline": {
+          "weighted_mae_pp": 0.289814973572494,
+          "weighted_rmse_pp": 0.4943152152460051
+        }
+      }
+    ],
+    "positions": [
+      {
+        "position_tier": "top_3",
+        "pages": 412,
+        "impressions": 1846866,
+        "observed_ctr_pct": 0.5659316918498689
+      },
+      {
+        "position_tier": "page_1",
+        "pages": 7424,
+        "impressions": 26226302,
+        "observed_ctr_pct": 0.36180853861897877
+      },
+      {
+        "position_tier": "striking",
+        "pages": 5026,
+        "impressions": 5915290,
+        "observed_ctr_pct": 0.4097685827744709
+      },
+      {
+        "position_tier": "page_3_5",
+        "pages": 5151,
+        "impressions": 8232359,
+        "observed_ctr_pct": 0.216438568823347
+      },
+      {
+        "position_tier": "deep",
+        "pages": 660,
+        "impressions": 534942,
+        "observed_ctr_pct": 0.026731869997121183
+      }
+    ],
+    "ranked_aggregate_recommendations": [
+      {
+        "content_type": "keyword article",
+        "main_intent": "transactional",
+        "position_tier": "page_1",
+        "eligible_pages": 1792,
+        "impressions_last_30d": 6721482,
+        "observed_ctr_pct": 0.37250713458728296,
+        "expected_ctr_pct": 0.48151268128915886,
+        "positive_gap_click_proxy": 7326.788200568179,
+        "action": "Review snippet-to-intent alignment and title/description choices; protect visibility and validate any change with a controlled test."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "informational",
+        "position_tier": "page_1",
+        "eligible_pages": 4143,
+        "impressions_last_30d": 14207067,
+        "observed_ctr_pct": 0.36581090241919745,
+        "expected_ctr_pct": 0.4152527856148946,
+        "positive_gap_click_proxy": 7024.2414716744315,
+        "action": "Review snippet-to-intent alignment and title/description choices; protect visibility and validate any change with a controlled test."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "commercial",
+        "position_tier": "page_1",
+        "eligible_pages": 1245,
+        "impressions_last_30d": 5179699,
+        "observed_ctr_pct": 0.3371817551560429,
+        "expected_ctr_pct": 0.4545827208311721,
+        "positive_gap_click_proxy": 6081.016645065014,
+        "action": "Review snippet-to-intent alignment and title/description choices; protect visibility and validate any change with a controlled test."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "informational",
+        "position_tier": "top_3",
+        "eligible_pages": 190,
+        "impressions_last_30d": 1008118,
+        "observed_ctr_pct": 0.48129286452577974,
+        "expected_ctr_pct": 0.6140206706476506,
+        "positive_gap_click_proxy": 1338.0529045196827,
+        "action": "Review snippet-to-intent alignment and title/description choices; protect visibility and validate any change with a controlled test."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "informational",
+        "position_tier": "page_3_5",
+        "eligible_pages": 3255,
+        "impressions_last_30d": 5762677,
+        "observed_ctr_pct": 0.2012085702530265,
+        "expected_ctr_pct": 0.20588809880189463,
+        "positive_gap_click_proxy": 269.6661153940586,
+        "action": "Check relevance, coverage, and technical/indexing fundamentals first; a CTR-only edit may not address weak visibility."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "informational",
+        "position_tier": "deep",
+        "eligible_pages": 410,
+        "impressions_last_30d": 459087,
+        "observed_ctr_pct": 0.026574483703524603,
+        "expected_ctr_pct": 0.05992144560780198,
+        "positive_gap_click_proxy": 153.09156699748985,
+        "action": "Check relevance, coverage, and technical/indexing fundamentals first; a CTR-only edit may not address weak visibility."
+      },
+      {
+        "content_type": "comparison article",
+        "main_intent": "informational",
+        "position_tier": "page_1",
+        "eligible_pages": 105,
+        "impressions_last_30d": 23488,
+        "observed_ctr_pct": 0.10643732970027248,
+        "expected_ctr_pct": 0.40965631591531454,
+        "positive_gap_click_proxy": 71.22007548218907,
+        "action": "Review snippet-to-intent alignment and title/description choices; protect visibility and validate any change with a controlled test."
+      },
+      {
+        "content_type": "feedly article",
+        "main_intent": "nan",
+        "position_tier": "page_1",
+        "eligible_pages": 113,
+        "impressions_last_30d": 59572,
+        "observed_ctr_pct": 0.4481971395957833,
+        "expected_ctr_pct": 0.5356771280567337,
+        "positive_gap_click_proxy": 52.11357872595744,
+        "action": "Review snippet-to-intent alignment and title/description choices; protect visibility and validate any change with a controlled test."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "transactional",
+        "position_tier": "deep",
+        "eligible_pages": 132,
+        "impressions_last_30d": 33741,
+        "observed_ctr_pct": 0.023710026377404346,
+        "expected_ctr_pct": 0.0607494519354857,
+        "positive_gap_click_proxy": 12.49747257755223,
+        "action": "Check relevance, coverage, and technical/indexing fundamentals first; a CTR-only edit may not address weak visibility."
+      },
+      {
+        "content_type": "keyword article",
+        "main_intent": "commercial",
+        "position_tier": "deep",
+        "eligible_pages": 111,
+        "impressions_last_30d": 39496,
+        "observed_ctr_pct": 0.02785092161231517,
+        "expected_ctr_pct": 0.05597418229251311,
+        "positive_gap_click_proxy": 11.10756303825098,
+        "action": "Check relevance, coverage, and technical/indexing fundamentals first; a CTR-only edit may not address weak visibility."
+      }
+    ],
+    "interpretation": "Contemporaneous, group-held-out decision support only; not a forecast, causal estimate, Google-ranking explanation, or guaranteed click uplift. Positive residual click-equivalents are descriptive proxies."
+  }
+}
